@@ -1,12 +1,12 @@
 export interface ITask {
-  id: number
+  id: string
   title: string
   subtasks: ISubtask[]
   status: ETaskStatus
 }
 
 export interface ISubtask {
-  id: number
+  id: string
   title: string
   status: ETaskStatus
 }
