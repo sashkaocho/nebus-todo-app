@@ -46,7 +46,7 @@ const triggerAddTask = (): void => {
             id="title"
             v-model="newTaskTitle"
             placeholder="Enter title"
-            type="title"
+            type="text"
           />
         </div>
 
