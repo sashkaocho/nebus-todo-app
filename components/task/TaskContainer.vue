@@ -1,12 +1,19 @@
 <script lang="ts" setup>
 import TaskComponent from "~/components/task/TaskComponent.vue"
 import { Checkbox } from "~/components/ui/checkbox"
-import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet"
 import {
   ETaskStatus,
   type ISubtask,
   type ITask,
 } from "~/types/models/task.model"
+import { VisuallyHidden } from "radix-vue"
 
 const props = defineProps<{
   task: ITask
@@ -60,6 +67,11 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
 
     <SheetContent class="pt-16">
       <TaskComponent :task="task" />
+
+      <VisuallyHidden>
+        <SheetDescription />
+        <SheetTitle />
+      </VisuallyHidden>
     </SheetContent>
   </Sheet>
 </template>
