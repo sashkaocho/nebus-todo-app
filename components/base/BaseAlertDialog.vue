@@ -10,10 +10,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "~/components/ui/alert-dialog"
-import type { ITask } from "~/types/models/task.model"
+import type { ISubtask, ITask } from "~/types/models/task.model"
 
 defineProps<{
-  task: ITask
+  task: ITask | ISubtask
 }>()
 
 const emit = defineEmits(["action"])
