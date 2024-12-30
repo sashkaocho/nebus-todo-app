@@ -9,24 +9,34 @@ import {
 } from "~/components/ui/dialog"
 import { Input } from "~/components/ui/input"
 import { Label } from "~/components/ui/label"
-import { ETaskStatus, type ITask } from "~/types/models/task.model"
-import { useTaskStore } from "~/pinia/task.pinia"
 import { VisuallyHidden } from "radix-vue"
-import { v4 as uuidv4 } from "uuid"
 
-const taskStore = useTaskStore()
+const props = defineProps<{
+  title: string
+  taskTitle?: string
+}>()
+
+const emit = defineEmits(["action"])
+
+const inputModel = ref<string>("")
 
 const isDialogOpen = ref<boolean>(false)
-const newTaskTitle = ref<string>("")
 
-const triggerAddTask = (): void => {
-  const newTask: ITask = {
-    id: uuidv4(),
-    title: newTaskTitle.value,
-    status: ETaskStatus.TODO,
-    subtasks: [],
+const disabledButton = computed(() => {
+  if (props.taskTitle) {
+    return inputModel.value.length < 1 || props.taskTitle === inputModel.value
   }
-  taskStore.addTask(newTask)
+  return inputModel.value.length < 1
+})
+
+onMounted(() => {
+  if (props.taskTitle) {
+    inputModel.value = props.taskTitle
+  }
+})
+
+const triggerAction = (): void => {
+  emit("action", inputModel.value)
   isDialogOpen.value = false
 }
 </script>
@@ -37,23 +47,21 @@ const triggerAddTask = (): void => {
       <slot />
     </DialogTrigger>
     <DialogContent class="w-[420px]">
-      <DialogTitle>Add Task</DialogTitle>
+      <DialogTitle>{{ title }}</DialogTitle>
 
       <div class="flex w-full flex-col gap-5">
         <div class="grid w-full items-center gap-1.5">
           <Label for="title">Title</Label>
           <Input
             id="title"
-            v-model="newTaskTitle"
+            v-model="inputModel"
             placeholder="Enter title"
             type="text"
           />
         </div>
 
-        <Button
-          :disabled="newTaskTitle.length < 1"
-          @click.left="triggerAddTask()"
-          >Add Task
+        <Button :disabled="disabledButton" @click.left="triggerAction"
+          >{{ taskTitle ? "Edit task" : "Add task" }}
         </Button>
       </div>
 
