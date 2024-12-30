@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import BaseAlertDialog from "~/components/base/BaseAlertDialog.vue"
+import BaseDialog from "~/components/base/BaseDialog.vue"
 import { Button } from "~/components/ui/button"
 import {
   ETaskStatus,
@@ -26,7 +27,7 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-8">
+  <div class="flex flex-col gap-9">
     <div class="flex w-full items-center justify-between">
       <h2 class="text-2xl font-semibold">{{ task.title }}</h2>
       <p :class="taskStatusStyle">{{ task.status }}</p>
@@ -64,9 +65,19 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
     <div class="flex items-center justify-between">
       <Button>Add Subtask</Button>
 
-      <BaseAlertDialog :task="task" @action="taskStore.deleteTask(task.id)">
-        <Button class="bg-error hover:bg-error/80">Delete</Button>
-      </BaseAlertDialog>
+      <div class="flex items-center gap-3">
+        <BaseDialog
+          :task-title="task.title"
+          title="Edit Task"
+          @action="(newTitle: string) => taskStore.editTask(task.id, newTitle)"
+        >
+          <Button class="bg-warning hover:bg-warning/80">Edit</Button>
+        </BaseDialog>
+
+        <BaseAlertDialog :task="task" @action="taskStore.deleteTask(task.id)">
+          <Button class="bg-error hover:bg-error/80">Delete</Button>
+        </BaseAlertDialog>
+      </div>
     </div>
   </div>
 </template>

@@ -92,6 +92,12 @@ export const useTaskStore = defineStore("task", {
     deleteTask(taskId: string): void {
       this.tasks = this.tasks.filter((task: ITask) => task.id !== taskId)
     },
+    editTask(taskId: string, newTitle: string): void {
+      const task = this.tasks.find((task: ITask) => task.id === taskId)
+      if (task) {
+        task.title = newTitle
+      }
+    },
   },
   getters: {
     getTasks(state): ITaskState["tasks"] {
