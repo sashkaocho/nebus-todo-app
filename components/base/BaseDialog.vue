@@ -38,6 +38,7 @@ onMounted(() => {
 const triggerAction = (): void => {
   emit("action", inputModel.value)
   isDialogOpen.value = false
+  // inputModel.value = ""
 }
 </script>
 
@@ -61,7 +62,7 @@ const triggerAction = (): void => {
         </div>
 
         <Button :disabled="disabledButton" @click.left="triggerAction"
-          >{{ taskTitle ? "Edit task" : "Add task" }}
+          >{{ title }}
         </Button>
       </div>
 
