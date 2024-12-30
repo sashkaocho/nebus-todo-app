@@ -19,6 +19,10 @@ const triggerAddTask = (newTaskTitle: string): void => {
   }
   taskStore.addTask(newTask)
 }
+
+onMounted(() => {
+  taskStore.fetchTasks()
+})
 </script>
 
 <template>
@@ -34,7 +38,7 @@ const triggerAddTask = (newTaskTitle: string): void => {
       </BaseDialog>
     </div>
 
-    <div class="grid grid-cols-3 gap-7">
+    <div class="grid gap-7 sm:grid-cols-2 md:grid-cols-3">
       <TaskContainer v-for="task in tasks" :key="task.id" :task="task" />
     </div>
   </main>
