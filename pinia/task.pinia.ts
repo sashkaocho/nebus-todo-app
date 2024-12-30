@@ -1,4 +1,8 @@
-import { ETaskStatus, type ITask } from "~/types/models/task.model"
+import {
+  ETaskStatus,
+  type ISubtask,
+  type ITask,
+} from "~/types/models/task.model"
 import { defineStore } from "pinia"
 import type { ITaskState } from "~/types/pinia/task.types"
 
@@ -96,6 +100,50 @@ export const useTaskStore = defineStore("task", {
       const task = this.tasks.find((task: ITask) => task.id === taskId)
       if (task) {
         task.title = newTitle
+      }
+    },
+    toggleTaskStatus(taskId: string): void {
+      const task = this.tasks.find((task: ITask) => task.id === taskId)
+      if (task) {
+        task.status =
+          task.status === ETaskStatus.DONE ? ETaskStatus.TODO : ETaskStatus.DONE
+      }
+    },
+    addSubtask(taskId: string, newSubtask: ISubtask): void {
+      const task = this.tasks.find((task: ITask) => task.id === taskId)
+      if (task) {
+        task.subtasks.push(newSubtask)
+      }
+    },
+    editSubtask(taskId: string, subtaskId: string, newTitle: string): void {
+      const task = this.tasks.find((task: ITask) => task.id === taskId)
+      if (task) {
+        const subtask = task.subtasks.find(
+          (subtask: ISubtask) => subtask.id === subtaskId,
+        )
+        if (subtask) {
+          subtask.title = newTitle
+        }
+      }
+    },
+    deleteSubtask(taskId: string, subtask: ISubtask): void {
+      const task = this.tasks.find((task: ITask) => task.id === taskId)
+      if (task) {
+        task.subtasks.splice(task.subtasks.indexOf(subtask), 1)
+      }
+    },
+    toggleSubtaskStatus(taskId: string, subtaskId: string): void {
+      const task = this.tasks.find((task: ITask) => task.id === taskId)
+      if (task) {
+        const subtask = task.subtasks.find(
+          (subtask: ISubtask) => subtask.id === subtaskId,
+        )
+        if (subtask) {
+          subtask.status =
+            subtask.status === ETaskStatus.DONE
+              ? ETaskStatus.TODO
+              : ETaskStatus.DONE
+        }
       }
     },
   },

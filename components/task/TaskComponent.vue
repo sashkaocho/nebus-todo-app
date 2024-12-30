@@ -2,12 +2,14 @@
 import BaseAlertDialog from "~/components/base/BaseAlertDialog.vue"
 import BaseDialog from "~/components/base/BaseDialog.vue"
 import { Button } from "~/components/ui/button"
+import { Checkbox } from "~/components/ui/checkbox"
 import {
   ETaskStatus,
   type ISubtask,
   type ITask,
 } from "~/types/models/task.model"
 import { useTaskStore } from "~/pinia/task.pinia"
+import { v4 as uuidv4 } from "uuid"
 
 const props = defineProps<{
   task: ITask
@@ -23,6 +25,15 @@ const taskStatusStyle = computed<string>(() => {
 
 const subtaskStatusStyle = (subtask: ISubtask): string => {
   return subtask.status === ETaskStatus.DONE ? "text-success" : "text-warning"
+}
+
+const triggerAddSubtask = (newSubtaskTitle: string): void => {
+  const newSubtask: ISubtask = {
+    id: uuidv4(),
+    title: newSubtaskTitle,
+    status: ETaskStatus.TODO,
+  }
+  taskStore.addSubtask(props.task.id, newSubtask)
 }
 </script>
 
@@ -49,13 +60,34 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
           </div>
 
           <section class="flex items-center gap-4">
-            <Icon
-              class="text-warning cursor-pointer text-lg"
-              name="ic:baseline-edit"
-            />
-            <Icon
-              class="text-error cursor-pointer text-lg"
-              name="ic:baseline-delete"
+            <BaseDialog
+              :task-title="subtask.title"
+              title="Edit Subtask"
+              @action="
+                (newTitle: string) =>
+                  taskStore.editSubtask(task.id, subtask.id, newTitle)
+              "
+            >
+              <Icon
+                class="text-warning cursor-pointer text-lg"
+                name="ic:baseline-edit"
+              />
+            </BaseDialog>
+
+            <BaseAlertDialog
+              :task="subtask"
+              @action="taskStore.deleteSubtask(task.id, subtask)"
+            >
+              <Icon
+                class="text-error cursor-pointer text-lg"
+                name="ic:baseline-delete"
+              />
+            </BaseAlertDialog>
+
+            <Checkbox
+              :checked="subtask.status === ETaskStatus.DONE"
+              class="h-4 w-4"
+              @click.stop="taskStore.toggleSubtaskStatus(task.id, subtask.id)"
             />
           </section>
         </div>
@@ -63,7 +95,14 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
     </ul>
 
     <div class="flex items-center justify-between">
-      <Button>Add Subtask</Button>
+      <BaseDialog
+        title="Add Subtask"
+        @action="
+          (newSubtaskTitle: string) => triggerAddSubtask(newSubtaskTitle)
+        "
+      >
+        <Button>Add Subtask</Button>
+      </BaseDialog>
 
       <div class="flex items-center gap-3">
         <BaseDialog
