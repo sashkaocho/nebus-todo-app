@@ -10,6 +10,14 @@ const tasks = computed<ITask[]>(() => {
   return taskStore.getTasks
 })
 
+onMounted(() => {
+  taskStore.fetchTasks()
+})
+
+useHead({
+  title: "Nebus ToDo App",
+})
+
 const triggerAddTask = (newTaskTitle: string): void => {
   const newTask: ITask = {
     id: uuidv4(),
@@ -19,10 +27,6 @@ const triggerAddTask = (newTaskTitle: string): void => {
   }
   taskStore.addTask(newTask)
 }
-
-onMounted(() => {
-  taskStore.fetchTasks()
-})
 </script>
 
 <template>
