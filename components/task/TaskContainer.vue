@@ -39,7 +39,7 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
   <Sheet>
     <SheetTrigger as-child>
       <div
-        class="bg-primary-50 hover:border-primary-300 border-primary-50 relative flex h-40 cursor-pointer flex-col items-start gap-3 rounded-xl border px-5 py-3 transition-all"
+        class="bg-primary-50 hover:border-primary-300 border-primary-50 relative flex h-40 cursor-pointer flex-col items-start gap-3 overflow-hidden rounded-xl border px-5 py-3 transition-all"
       >
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-4">
