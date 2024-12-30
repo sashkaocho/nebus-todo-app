@@ -1,75 +1,23 @@
-# Nuxt Minimal Starter
+# Nebus ToDo App
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This repository contains a frontend project, todo app. The frontend is built using **Nuxt 3** and **TypeScript**.
 
-## Setup
+## Requirements
 
-Make sure to install dependencies:
+- **Docker** (for containerization)
+- **Docker Compose** (to manage multi-container applications)
+- **Git** (for version control)
+- **Node.js** (for backend and frontend development)
 
-```bash
-# npm
-npm install
+- **Port 3000**
 
-# pnpm
-pnpm install
+## Setup and Installation
 
-# yarn
-yarn install
+Follow the steps below to set up and run the project on your local machine:
 
-# bun
-bun install
-```
+### 1. Clone the Repository
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+### 2. Build and Start the Containers
 
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+docker-compose up --build
