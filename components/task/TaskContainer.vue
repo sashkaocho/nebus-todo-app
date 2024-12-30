@@ -44,8 +44,8 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-4">
             <Checkbox
-              v-if="task.status !== ETaskStatus.DONE"
-              @click.stop="console.log('hello')"
+              :checked="task.status === ETaskStatus.DONE"
+              @click.stop="taskStore.toggleTaskStatus(task.id)"
             />
             <h2 class="text-xl font-medium">{{ task.title }}</h2>
           </div>
