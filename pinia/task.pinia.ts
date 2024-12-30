@@ -86,8 +86,11 @@ export const useTaskStore = defineStore("task", {
     ],
   }),
   actions: {
-    addTask(task: ITask): void {
-      this.tasks.push(task)
+    addTask(newTask: ITask): void {
+      this.tasks.push(newTask)
+    },
+    deleteTask(taskId: string): void {
+      this.tasks = this.tasks.filter((task: ITask) => task.id !== taskId)
     },
   },
   getters: {
