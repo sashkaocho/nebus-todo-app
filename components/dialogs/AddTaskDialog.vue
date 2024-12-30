@@ -50,7 +50,11 @@ const triggerAddTask = (): void => {
           />
         </div>
 
-        <Button @click.left="triggerAddTask()">Add Task</Button>
+        <Button
+          :disabled="newTaskTitle.length < 1"
+          @click.left="triggerAddTask()"
+          >Add Task
+        </Button>
       </div>
 
       <VisuallyHidden>
