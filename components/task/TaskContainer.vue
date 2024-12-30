@@ -1,5 +1,7 @@
 <script lang="ts" setup>
+import BaseAlertDialog from "~/components/base/BaseAlertDialog.vue"
 import TaskComponent from "~/components/task/TaskComponent.vue"
+import { Button } from "~/components/ui/button"
 import { Checkbox } from "~/components/ui/checkbox"
 import {
   Sheet,
@@ -13,11 +15,14 @@ import {
   type ISubtask,
   type ITask,
 } from "~/types/models/task.model"
+import { useTaskStore } from "~/pinia/task.pinia"
 import { VisuallyHidden } from "radix-vue"
 
 const props = defineProps<{
   task: ITask
 }>()
+
+const taskStore = useTaskStore()
 
 const taskStatusStyle = computed<string>(() => {
   return props.task.status === ETaskStatus.DONE
@@ -34,17 +39,27 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
   <Sheet>
     <SheetTrigger as-child>
       <div
-        class="bg-primary-50 hover:border-primary-300 border-primary-50 flex h-40 cursor-pointer flex-col items-start gap-3 rounded-xl border px-5 py-3 transition-all"
+        class="bg-primary-50 hover:border-primary-300 border-primary-50 relative flex h-40 cursor-pointer flex-col items-start gap-3 rounded-xl border px-5 py-3 transition-all"
       >
         <div class="flex w-full items-center justify-between">
           <div class="flex items-center gap-4">
-            <Checkbox @click.stop="console.log('hello')" />
+            <Checkbox
+              v-if="task.status !== ETaskStatus.DONE"
+              @click.stop="console.log('hello')"
+            />
             <h2 class="text-xl font-medium">{{ task.title }}</h2>
           </div>
 
           <h2 :class="taskStatusStyle">
             {{ task.status }}
           </h2>
+
+          <BaseAlertDialog :task="task" @action="taskStore.deleteTask(task.id)">
+            <Button
+              class="border-error text-error hover:bg-error absolute bottom-3 right-5 border bg-blue-50 hover:text-white"
+              >delete
+            </Button>
+          </BaseAlertDialog>
         </div>
 
         <ul class="flex list-disc flex-col items-start gap-1.5 pl-4">

@@ -1,14 +1,18 @@
 <script lang="ts" setup>
+import BaseAlertDialog from "~/components/base/BaseAlertDialog.vue"
 import { Button } from "~/components/ui/button"
 import {
   ETaskStatus,
   type ISubtask,
   type ITask,
 } from "~/types/models/task.model"
+import { useTaskStore } from "~/pinia/task.pinia"
 
 const props = defineProps<{
   task: ITask
 }>()
+
+const taskStore = useTaskStore()
 
 const taskStatusStyle = computed<string>(() => {
   return props.task.status === ETaskStatus.DONE
@@ -58,8 +62,11 @@ const subtaskStatusStyle = (subtask: ISubtask): string => {
     </ul>
 
     <div class="flex items-center justify-between">
-      <Button class="ring-0">Add Subtask</Button>
-      <Button class="bg-error hover:bg-error/80">Delete Task</Button>
+      <Button>Add Subtask</Button>
+
+      <BaseAlertDialog :task="task" @action="taskStore.deleteTask(task.id)">
+        <Button class="bg-error hover:bg-error/80">Delete</Button>
+      </BaseAlertDialog>
     </div>
   </div>
 </template>
