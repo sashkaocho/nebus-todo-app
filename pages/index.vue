@@ -1,23 +1,37 @@
 <script lang="ts" setup>
-import AddTaskDialog from "~/components/dialogs/AddTaskDialog.vue"
 import { Button } from "~/components/ui/button"
-import type { ITask } from "~/types/models/task.model"
+import { ETaskStatus, type ITask } from "~/types/models/task.model"
 import { useTaskStore } from "~/pinia/task.pinia"
+import { v4 as uuidv4 } from "uuid"
 
 const taskStore = useTaskStore()
 
 const tasks = computed<ITask[]>(() => {
   return taskStore.getTasks
 })
+
+const triggerAddTask = (newTaskTitle: string): void => {
+  const newTask: ITask = {
+    id: uuidv4(),
+    title: newTaskTitle,
+    status: ETaskStatus.TODO,
+    subtasks: [],
+  }
+  taskStore.addTask(newTask)
+}
 </script>
 
 <template>
   <main class="flex flex-col gap-7 px-32 pt-16">
     <div class="flex items-center justify-between">
       <h2 class="text-primary-700 text-xl font-bold">Todo List</h2>
-      <AddTaskDialog>
+
+      <BaseDialog
+        title="Add Task"
+        @action="(newTaskTitle: string) => triggerAddTask(newTaskTitle)"
+      >
         <Button>Add Task</Button>
-      </AddTaskDialog>
+      </BaseDialog>
     </div>
 
     <div class="grid grid-cols-3 gap-7">
